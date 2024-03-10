@@ -5,14 +5,10 @@ import { CreateQuizDto } from './dto/createQuiz.dto';
 @Controller('quiz')
 export class QuizController {
      constructor(private readonly quizService:QuizService){}
-     @Get('/')
-     getQuiz(){
-          return this.quizService.getData();
-     }
 
      @Post('/create')
      @UsePipes(ValidationPipe)
-     createQuiz(@Body() quizData:CreateQuizDto){
-          return { data:quizData }
+     async createQuiz(@Body() quizData:CreateQuizDto){
+          return await this.quizService.createNewQuiz(quizData);
      }
 }
