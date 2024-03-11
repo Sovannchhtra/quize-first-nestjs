@@ -1,31 +1,30 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { createUserDto } from 'src/users/dtos/createUser.dto';
 
 @Controller('users')
 export class UsersController {
      @Get()
-     getUser() {
-          return [{username:"Nai Sovannchhaktra",email:"sovannchhaktra@gmail.com"}];
+     getUser(@Query('sortBy') sortBy:string) {
+          return [
+               {
+                    username:"Nai Sovannchhaktra",
+                    email:"sovannchhaktra@gmail.com"
+               },
+               {
+                    sortBy
+               }
+          ];
      }
 
-     @Get('posts')
-     getUserPosts() {
-          return [{
-               username:"Nai Sovannchhaktra",
-               email:"sovannchhaktra@gmail.com",
-               posts:[
-                    {
-                         id:1,
-                         post:"Post 1"
-                    },
-                    {
-                         id:2,
-                         post:"Post 2"
-                    },
-                    {
-                         id:3,
-                         post:"Post 3"
-                    }
-               ]
-          }]
+     @Post('create')
+     @UsePipes(new ValidationPipe())
+     createUser(@Body() userData:createUserDto) {
+          return { userData }
+     }
+
+     @Get(':id')
+     getUserById(@Param('id') id:string){
+          console.log(id);
+          return { id };
      }
 }
